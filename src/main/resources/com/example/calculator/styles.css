@@ -1,0 +1,10 @@
+.button{
+    -fx-pref-height: 70px;
+    -fx-pref-width: 70px;
+}
+.equal-button{
+    -fx-pref-width: 140px;
+}
+.text-field{
+    -fx-pref-height: 70px;
+}
