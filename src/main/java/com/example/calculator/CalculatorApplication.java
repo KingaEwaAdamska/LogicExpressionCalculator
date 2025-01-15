@@ -1,15 +1,17 @@
 package com.example.calculator;
 
-import Utils.BinaryConvert;
+import Utils.ConvertNumberSystem;
 import Utils.Operation;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -17,66 +19,82 @@ import java.io.IOException;
 
 public class CalculatorApplication extends Application {
     private static final int PADDING = 10;
+    private static final Insets INSETS = new Insets(PADDING, PADDING, PADDING, PADDING);
 
     public void start(Stage stage) throws IOException {
         TextField display = createDisplay();
         GridPane gridPane = createCalcPane(stage, display);
 
-        VBox container1 = new VBox();
-        container1.setPadding(new Insets(PADDING, PADDING, PADDING, PADDING));
-        container1.getChildren().addAll(display, gridPane);
+        VBox calcMainContainer = new VBox();
+        calcMainContainer.setPadding(INSETS);
+        calcMainContainer.getChildren().addAll(display, gridPane);
 
-        Button changeToBinaries = new Button("Binary converter");
+        Button changeToBinaries = new Button("Konwersja systemów liczbowych");
         changeToBinaries.getStyleClass().add("change-button");
 
-        Button changeToCalc = new Button("Calculator");
+        Button changeToCalc = new Button("Kalkulator prosty");
         changeToCalc.getStyleClass().add("change-button");
 
-        BorderPane root = new BorderPane();
-        root.setCenter(container1);
-        root.setTop(changeToBinaries);
+        Button changeToLogic = new Button("Kalkulator logiczny");
+        changeToLogic.getStyleClass().add("change-button");
 
-        Scene scene1 = new Scene(root);
-        scene1.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        Button changeToBinaries1 = new Button("Konwersja systemów liczbowych");
+        changeToBinaries1.getStyleClass().add("change-button");
+
+        Button changeToCalc1 = new Button("Kalkulator prosty");
+        changeToCalc1.getStyleClass().add("change-button");
+
+        Button changeToLogic1 = new Button("Kalkulator logiczny");
+        changeToLogic1.getStyleClass().add("change-button");
 
         Label info = new Label("Konwersja systemów liczbowych");
 
-        Label decimalToBinaryInfo = new Label("Podaj liczbę decymalnie");
-        TextField decimalToBinaryField = new TextField();
-        Button decimalToBinaryButton = new Button("Wylicz binarną");
-        decimalToBinaryButton.setOnAction(e-> BinaryConvert.decimalToBinary(decimalToBinaryField));
+        VBox conversionMainContainer = new VBox();
+        GridPane convGrid = createConversionPane();
 
-        Label binaryToDecimalInfo = new Label("Podaj liczbę binarnie");
-        TextField binaryToDecimalField = new TextField();
-        Button binaryToDecimalButton = new Button("Wylicz decymalną");
-        binaryToDecimalButton.setOnAction(e-> BinaryConvert.binaryToDecimal(binaryToDecimalField));
+        conversionMainContainer.getChildren().addAll(info, convGrid);
+        conversionMainContainer.setPadding(INSETS);
 
-        VBox container2 = new VBox();
-        GridPane gridPane2 = new GridPane();
-        gridPane2.setPadding(new Insets(PADDING, PADDING, PADDING, PADDING));
+        VBox logicMainContainer = new VBox();
+        Button logicInfo = new Button("Jak pisać?");
+        logicInfo.setOnAction(e -> {});
 
-        gridPane2.add(decimalToBinaryInfo, 1, 1);
-        gridPane2.add(decimalToBinaryField, 2, 1);
-        gridPane2.add(decimalToBinaryButton, 3, 1);
+        HBox calcHeader = new HBox();
+        calcHeader.getChildren().addAll(changeToBinaries, changeToLogic);
 
-        gridPane2.add(binaryToDecimalInfo, 1, 2);
-        gridPane2.add(binaryToDecimalField, 2, 2);
-        gridPane2.add(binaryToDecimalButton, 3, 2);
+        HBox conversionHeader = new HBox();
+        conversionHeader.getChildren().addAll(changeToCalc, changeToLogic1);
 
-        container2.getChildren().addAll(info, gridPane2);
-        container2.setPadding(new Insets(PADDING, PADDING, PADDING, PADDING));
+        HBox logicHeader = new HBox();
+        logicHeader.getChildren().addAll(changeToCalc1, changeToBinaries1);
 
-        BorderPane root2 = new BorderPane();
-        root2.setCenter(container2);
-        root2.setTop(changeToCalc);
-        Scene scene2 = new Scene(root2);
-        scene2.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        BorderPane calcLayout = new BorderPane();
+        calcLayout.setCenter(calcMainContainer);
+        calcLayout.setTop(calcHeader);
+        Scene calcScene = new Scene(calcLayout);
+        calcScene.getStylesheets().add(getClass().getResource("calcScene.css").toExternalForm());
 
-        changeToBinaries.setOnAction(e -> {stage.setScene(scene2);});
-        changeToCalc.setOnAction(e -> {stage.setScene(scene1);});
+        BorderPane conversionLayout = new BorderPane();
+        conversionLayout.setCenter(conversionMainContainer);
+        conversionLayout.setTop(conversionHeader);
+        Scene conversionScene = new Scene(conversionLayout);
+        conversionScene.getStylesheets().add(getClass().getResource("convertScene.css").toExternalForm());
 
-        stage.setTitle("Calculator");
-        stage.setScene(scene1);
+        BorderPane logicLayout = new BorderPane();
+        logicLayout.setCenter(logicMainContainer);
+        logicLayout.setTop(logicHeader);
+        Scene logicScene = new Scene(logicLayout);
+        logicScene.getStylesheets().add(getClass().getResource("logicScene.css").toExternalForm());
+
+        changeToCalc.setOnAction(e -> {stage.setScene(calcScene);});
+        changeToBinaries.setOnAction(e -> {stage.setScene(conversionScene);});
+        changeToLogic.setOnAction(e -> {stage.setScene(logicScene);});
+        changeToCalc1.setOnAction(e -> {stage.setScene(calcScene);});
+        changeToBinaries1.setOnAction(e -> {stage.setScene(conversionScene);});
+        changeToLogic1.setOnAction(e -> {stage.setScene(logicScene);});
+
+        stage.setTitle("Kalkulator");
+        stage.setScene(calcScene);
         stage.show();
     }
 
@@ -84,6 +102,7 @@ public class CalculatorApplication extends Application {
         TextField display = new TextField();
         display.setEditable(false);
         display.setText("0");
+        display.getStyleClass().add("display");
         return display;
     }
 
@@ -144,7 +163,69 @@ public class CalculatorApplication extends Application {
         return grid;
     }
 
+    private GridPane createConversionPane() {
 
+        GridPane grid = new GridPane();
+
+        Label decimalToBinaryInfo = new Label("Podaj liczbę decymalnie");
+        TextField decimalToBinaryField = new TextField();
+        Button decimalToBinaryButton = new Button("Wylicz binarną");
+        decimalToBinaryButton.setOnAction(e-> ConvertNumberSystem.decimalToBinary(decimalToBinaryField));
+
+        Label binaryToDecimalInfo = new Label("Podaj liczbę binarnie");
+        TextField binaryToDecimalField = new TextField();
+        Button binaryToDecimalButton = new Button("Wylicz decymalną");
+        binaryToDecimalButton.setOnAction(e-> ConvertNumberSystem.binaryToDecimal(binaryToDecimalField));
+
+        Label decimalToHexInfo = new Label("Podaj liczbę decymalnie");
+        TextField decimalToHexField = new TextField();
+        Button decimalToHexButton = new Button("Wylicz heksadecymalną");
+        decimalToHexButton.setOnAction(e-> ConvertNumberSystem.decimalToHex(decimalToHexField));
+
+        Label hexToDecimalInfo= new Label("Podaj liczbę heksadecymalnie");
+        TextField hexToDecimalField = new TextField();
+        Button hexToDecimalButton = new Button("Wylicz decymalną");
+        hexToDecimalButton.setOnAction(e-> ConvertNumberSystem.hexToDecimal(hexToDecimalField));
+
+        Label hexToBinaryInfo= new Label("Podaj liczbę heksadecymalnie");
+        TextField hexToBinaryField = new TextField();
+        Button hexToBinaryButton = new Button("Wylicz binarną");
+        hexToBinaryButton.setOnAction(e-> ConvertNumberSystem.hexToBinary(hexToBinaryField));
+
+        Label binaryToHexInfo = new Label("Podaj liczbę binarnie");
+        TextField binaryToHexField = new TextField();
+        Button binaryToHexButton = new Button("Wylicz heksadecymalną");
+        binaryToHexButton.setOnAction(e-> ConvertNumberSystem.binaryToHex(binaryToHexField));
+
+
+        grid.setPadding(new Insets(PADDING, PADDING, PADDING, PADDING));
+
+        grid.add(decimalToBinaryInfo, 1, 1);
+        grid.add(decimalToBinaryField, 2, 1);
+        grid.add(decimalToBinaryButton, 3, 1);
+
+        grid.add(binaryToDecimalInfo, 1, 2);
+        grid.add(binaryToDecimalField, 2, 2);
+        grid.add(binaryToDecimalButton, 3, 2);
+
+        grid.add(decimalToHexInfo, 1, 3);
+        grid.add(decimalToHexField, 2, 3);
+        grid.add(decimalToHexButton, 3, 3);
+
+        grid.add(hexToDecimalInfo, 1, 4);
+        grid.add(hexToDecimalField, 2, 4);
+        grid.add(hexToDecimalButton, 3, 4);
+
+        grid.add(binaryToHexInfo, 1, 5);
+        grid.add(binaryToHexField, 2, 5);
+        grid.add(binaryToHexButton, 3, 5);
+
+        grid.add(hexToBinaryInfo, 1, 6);
+        grid.add(hexToBinaryField, 2, 6);
+        grid.add(hexToBinaryButton, 3, 6);
+
+        return grid;
+    }
 
     public static void main(String[] args) {
         launch();

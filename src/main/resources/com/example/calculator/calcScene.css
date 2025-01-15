@@ -2,13 +2,11 @@
     -fx-pref-height: 70px;
     -fx-pref-width: 70px;
 }
-.equal-button{
-    -fx-pref-width: 140px;
-}
-.text-field{
+.display{
     -fx-pref-height: 70px;
+    -fx-pref-width: 300px;
 }
 .change-button{
-    -fx-pref-width: 200px;
+    -fx-pref-width: 250px;
     -fx-pref-height: 30px;
 }
