@@ -8,3 +8,7 @@
 .text-field{
     -fx-pref-height: 70px;
 }
+.change-button{
+    -fx-pref-width: 200px;
+    -fx-pref-height: 30px;
+}
