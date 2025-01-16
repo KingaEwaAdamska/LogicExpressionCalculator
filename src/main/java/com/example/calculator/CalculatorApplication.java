@@ -4,6 +4,7 @@ import Utils.ConvertNumberSystem;
 import Utils.Operation;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class CalculatorApplication extends Application {
     private static final int PADDING = 10;
@@ -57,7 +59,19 @@ public class CalculatorApplication extends Application {
 
         VBox logicMainContainer = new VBox();
         Button logicInfo = new Button("Jak pisać?");
-        logicInfo.setOnAction(e -> {});
+        logicInfo.setOnAction(e -> {LogicInfoWindow.displayInfo();});
+
+        TextField logicalEquationField = new TextField();
+
+        Button logicalEquationButton = new Button("Rozwiąż");
+        logicalEquationButton.setOnAction(e -> {LogicTableWindow.display(logicalEquationField);});
+
+
+
+        logicMainContainer.getChildren().addAll(logicInfo, logicalEquationField, logicalEquationButton);
+        logicMainContainer.setPadding(INSETS);
+        logicMainContainer.setAlignment(Pos.CENTER);
+        logicMainContainer.setSpacing(10);
 
         HBox calcHeader = new HBox();
         calcHeader.getChildren().addAll(changeToBinaries, changeToLogic);
@@ -72,19 +86,19 @@ public class CalculatorApplication extends Application {
         calcLayout.setCenter(calcMainContainer);
         calcLayout.setTop(calcHeader);
         Scene calcScene = new Scene(calcLayout);
-        calcScene.getStylesheets().add(getClass().getResource("calcScene.css").toExternalForm());
+        calcScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("calcScene.css")).toExternalForm());
 
         BorderPane conversionLayout = new BorderPane();
         conversionLayout.setCenter(conversionMainContainer);
         conversionLayout.setTop(conversionHeader);
         Scene conversionScene = new Scene(conversionLayout);
-        conversionScene.getStylesheets().add(getClass().getResource("convertScene.css").toExternalForm());
+        conversionScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("convertScene.css")).toExternalForm());
 
         BorderPane logicLayout = new BorderPane();
         logicLayout.setCenter(logicMainContainer);
         logicLayout.setTop(logicHeader);
-        Scene logicScene = new Scene(logicLayout);
-        logicScene.getStylesheets().add(getClass().getResource("logicScene.css").toExternalForm());
+        Scene logicScene = new Scene(logicLayout, 300,300);
+        logicScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("logicScene.css")).toExternalForm());
 
         changeToCalc.setOnAction(e -> {stage.setScene(calcScene);});
         changeToBinaries.setOnAction(e -> {stage.setScene(conversionScene);});
