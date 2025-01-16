@@ -1,5 +1,6 @@
 package com.example.calculator;
 
+import Utils.LogicCalc;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +21,10 @@ public class LogicTableWindow {
         VBox layout = new VBox();
         layout.setSpacing(10);
         layout.setAlignment(Pos.CENTER);
+
+        String equationString;
+        String binaryString;
+        LogicCalc logicCalc = new LogicCalc();
 
         Scene scene;
         Label mainInfo;
@@ -53,23 +58,44 @@ public class LogicTableWindow {
 
                 table.getColumns().add(column);
             }
-            TableColumn<List<Integer>, Integer> column = new TableColumn<>(equation.getText());
-            int finalIndex1 = index;
-            column.setCellValueFactory(cellData -> {
+            TableColumn<List<Integer>, Integer> equationColumn = new TableColumn<>(equation.getText()); // Zakładając, że `equation.getText()` jest poprawne
+            equationColumn.setCellValueFactory(cellData -> {
                 List<Integer> rowData = cellData.getValue();
-                if (rowData != null && finalIndex1 < rowData.size()) {
-                    return new SimpleObjectProperty<>(rowData.get(finalIndex1 + 1)); // Wrap the value in a property
+                if (rowData != null && rowData.size() > variables.size()) { // Upewnij się, że mamy dane
+                    return new SimpleObjectProperty<>(rowData.get(variables.size())); // Ostatnia kolumna
                 } else {
                     return new SimpleObjectProperty<>(null); // Handle nulls appropriately
                 }
             });
-            table.getColumns().add(column);
-
+            table.getColumns().add(equationColumn);
+            table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
             ObservableList<List<Integer>> data = FXCollections.observableArrayList();
-            data.add(List.of(1, 2, 3));
-            data.add(List.of(4, 5, 6));
-            data.add(List.of(7, 8, 9));
+
+            int rows = (int) Math.pow(2, variables.size());
+            for (int i = 0; i < rows; i++) {
+                List<Integer> temp = new ArrayList<>();
+                equationString = equation.getText();
+
+                // Convert to binary with padding
+                binaryString = String.format("%" + variables.size() + "s", Integer.toBinaryString(i)).replace(' ', '0');
+
+                // Replace variables in the equation with binary values
+                for (int j = 0; j < variables.size(); j++) {
+                    char variable = variables.get(j);
+                    char value = binaryString.charAt(j);
+                    temp.add(Integer.parseInt(String.valueOf(value)));
+                    equationString = equationString.replace(variable, value);
+                }
+                if(logicCalc.solveEquation(equationString)){
+                    temp.add(1);
+                }else{
+                    temp.add(0);
+                }
+
+                data.add(temp);
+
+            }
             table.setItems(data);
 
             layout.getChildren().addAll(mainInfo, table, exitButton);
@@ -102,7 +128,7 @@ public class LogicTableWindow {
             return false;
         }
         for (int i = 0; i < equation.length()-1; i++){
-            if (!corectnessOfNextChar(equation.charAt(i), equation.charAt(i+1))){ return false; }
+            if (!correctnessOfNextChar(equation.charAt(i), equation.charAt(i+1))){ return false; }
         }
         return true;
     }
@@ -120,14 +146,13 @@ public class LogicTableWindow {
         return bracket1 == bracket2;
     }
 
-    private static boolean corectnessOfNextChar(char first, char second){
+    private static boolean correctnessOfNextChar(char first, char second){
         switch (first){
-
             case '~':
                 if (!checkNegation(second)) return false;
                 break;
             case '(':
-            case '^':
+            case '&':
             case '|':
             case '>':
             case '=':
@@ -141,7 +166,7 @@ public class LogicTableWindow {
     }
 
     private static boolean checkLetterOrBracket(char character){
-        char[] tab = {')', '^', '|', '=', '>'};
+        char[] tab = {')', '&', '|', '=', '>'};
         return new String(tab).indexOf(character) >= 0;
     }
 
