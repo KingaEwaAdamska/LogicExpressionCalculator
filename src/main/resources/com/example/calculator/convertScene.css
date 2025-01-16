@@ -1,6 +1,8 @@
 .button{
     -fx-pref-height: 40px;
     -fx-pref-width: 150px;
+    -fx-padding: 10px;
+    -fx-end-margin: 10px;
 }
 .text-field{
     -fx-pref-height: 40px;

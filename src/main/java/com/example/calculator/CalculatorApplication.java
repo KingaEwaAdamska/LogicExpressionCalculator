@@ -8,7 +8,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -26,6 +25,7 @@ public class CalculatorApplication extends Application {
     public void start(Stage stage) throws IOException {
         TextField display = createDisplay();
         GridPane gridPane = createCalcPane(stage, display);
+        gridPane.setAlignment(Pos.CENTER);
 
         VBox calcMainContainer = new VBox();
         calcMainContainer.setPadding(INSETS);
@@ -49,26 +49,26 @@ public class CalculatorApplication extends Application {
         Button changeToLogic1 = new Button("Kalkulator logiczny");
         changeToLogic1.getStyleClass().add("change-button");
 
-        Label info = new Label("Konwersja systemów liczbowych");
+        Label converionInfo = new Label("Konwersja systemów liczbowych");
+        Label logicInfo = new Label("Kalkulator wyrażeń logicznych");
 
         VBox conversionMainContainer = new VBox();
         GridPane convGrid = createConversionPane();
-
-        conversionMainContainer.getChildren().addAll(info, convGrid);
+        convGrid.setAlignment(Pos.CENTER);
+        convGrid.setPadding(INSETS);
+        conversionMainContainer.getChildren().addAll(converionInfo, convGrid);
         conversionMainContainer.setPadding(INSETS);
+        conversionMainContainer.setAlignment(Pos.CENTER);
 
         VBox logicMainContainer = new VBox();
-        Button logicInfo = new Button("Jak pisać?");
-        logicInfo.setOnAction(e -> {LogicInfoWindow.displayInfo();});
-
+        Button logicTutorial = new Button("Jak pisać?");
+        logicTutorial.setOnAction(e -> {LogicInfoWindow.displayInfo();});
         TextField logicalEquationField = new TextField();
 
         Button logicalEquationButton = new Button("Rozwiąż");
         logicalEquationButton.setOnAction(e -> {LogicTableWindow.display(logicalEquationField);});
 
-
-
-        logicMainContainer.getChildren().addAll(logicInfo, logicalEquationField, logicalEquationButton);
+        logicMainContainer.getChildren().addAll(logicInfo, logicTutorial, logicalEquationField, logicalEquationButton);
         logicMainContainer.setPadding(INSETS);
         logicMainContainer.setAlignment(Pos.CENTER);
         logicMainContainer.setSpacing(10);
@@ -97,7 +97,7 @@ public class CalculatorApplication extends Application {
         BorderPane logicLayout = new BorderPane();
         logicLayout.setCenter(logicMainContainer);
         logicLayout.setTop(logicHeader);
-        Scene logicScene = new Scene(logicLayout, 300,300);
+        Scene logicScene = new Scene(logicLayout, 400,300);
         logicScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("logicScene.css")).toExternalForm());
 
         changeToCalc.setOnAction(e -> {stage.setScene(calcScene);});

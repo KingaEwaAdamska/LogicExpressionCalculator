@@ -1,9 +1,11 @@
 package com.example.calculator;
 
 import Utils.LogicCalc;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -69,6 +71,13 @@ public class LogicTableWindow {
             });
             table.getColumns().add(equationColumn);
             table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+            table.itemsProperty().addListener((obs, old, items) -> {
+                table.setFixedCellSize(30);
+                table.prefHeightProperty().bind(
+                        table.fixedCellSizeProperty().multiply(Bindings.size(table.getItems()).add(1)) // +1 for header
+                );
+            });
+
 
             ObservableList<List<Integer>> data = FXCollections.observableArrayList();
 
@@ -94,10 +103,12 @@ public class LogicTableWindow {
                 }
 
                 data.add(temp);
-
             }
             table.setItems(data);
 
+            layout.setAlignment(Pos.CENTER);
+            layout.setSpacing(10);
+            layout.setPadding(new Insets(10,10,10,10));
             layout.getChildren().addAll(mainInfo, table, exitButton);
             scene = new Scene(layout);
         }else{
