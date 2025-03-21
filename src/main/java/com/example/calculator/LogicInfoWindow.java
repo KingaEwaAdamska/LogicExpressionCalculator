@@ -11,15 +11,15 @@ public class LogicInfoWindow {
 
     public static void displayInfo() {
         Stage stage = new Stage();
-        stage.setTitle("Pisanie równań logicznych");
+        stage.setTitle("Writing Logical Equations");
 
-        Label mainInfo = new Label("Przyjęty sposób zapisu równań logicznych:");
+        Label mainInfo = new Label("Accepted notation for writing logical equations:");
 
         TextArea info = new TextArea();
         info.setEditable(false);
-        info.setText("Zmienne to małe litery \n Zapis koniunkcji: & \n Zapis alternatywy: | \n Zapis zaprzeczenia: ~ \n Zapis równoważności: = \n Zapis implikacji: >");
+        info.setText("Variables are lowercase letters \n Conjunction notation: & \n Disjunction notation: | \n Negation notation: ~ \n Equivalence notation: = \n Implication notation: >");
 
-        Button exitButton = new Button("Zamknij");
+        Button exitButton = new Button("Close");
         exitButton.setOnAction(e -> stage.close());
 
         VBox layout = new VBox();

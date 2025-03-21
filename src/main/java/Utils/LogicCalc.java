@@ -4,7 +4,6 @@ public class LogicCalc {
     String equation;
     public boolean solveEquation(String valueOfEquation) {
         equation = valueOfEquation;
-        System.out.println(equation);
         while (!(equation.equals("0") || equation.equals("1"))) {
             if(removeBrackets())continue;
             if(removeNegation())continue;

@@ -31,13 +31,13 @@ public class LogicTableWindow {
         Scene scene;
         Label mainInfo;
 
-        Button exitButton = new Button("Zamknij");
+        Button exitButton = new Button("Close");
         exitButton.setOnAction(e -> stage.close());
 
         if(isCorrect(equation.getText())){
-            stage.setTitle("Wynik wyrażenia");
+            stage.setTitle("Result of the Expression");
 
-            mainInfo = new Label("Tabela prawdy dla równania:");
+            mainInfo = new Label("Truth table for the equation:");
 
             List<Character> variables = variablesInEquation(equation.getText());
 
@@ -52,7 +52,7 @@ public class LogicTableWindow {
                 column.setCellValueFactory(cellData -> {
                     List<Integer> rowData = cellData.getValue();
                     if (rowData != null && finalIndex < rowData.size()) {
-                        return new SimpleObjectProperty<>(rowData.get(finalIndex)); // Wrap the value in a property
+                        return new SimpleObjectProperty<>(rowData.get(finalIndex));
                     } else {
                         return new SimpleObjectProperty<>(null); // Handle nulls appropriately
                     }
@@ -60,7 +60,7 @@ public class LogicTableWindow {
 
                 table.getColumns().add(column);
             }
-            TableColumn<List<Integer>, Integer> equationColumn = new TableColumn<>(equation.getText()); // Zakładając, że `equation.getText()` jest poprawne
+            TableColumn<List<Integer>, Integer> equationColumn = new TableColumn<>(equation.getText());
             equationColumn.setCellValueFactory(cellData -> {
                 List<Integer> rowData = cellData.getValue();
                 if (rowData != null && rowData.size() > variables.size()) { // Upewnij się, że mamy dane
@@ -112,8 +112,8 @@ public class LogicTableWindow {
             layout.getChildren().addAll(mainInfo, table, exitButton);
             scene = new Scene(layout);
         }else{
-            stage.setTitle("Błędne wyrażenie");
-            mainInfo = new Label("Błędnie zapisane wyrażenie logiczne");
+            stage.setTitle("Invalid Expression");
+            mainInfo = new Label("Incorrectly written logical expression");
             layout.getChildren().addAll(mainInfo, exitButton);
             scene = new Scene(layout, 300, 100);
         }
